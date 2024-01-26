@@ -1,27 +1,24 @@
-import "./App.css";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from "react-router-dom";
+import Cookies from "js-cookie";
+
+import "./App.css";
 import Login from "./Components/Login";
 import SignUp from "./Components/SignUp";
 import Home from "./Components/Home";
 import Products from "./Components/Products";
-import { useEffect, useState } from "react";
-import Cookies from "js-cookie";
 
 function App() {
   const [isAuthenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
     const token = Cookies.get("token");
-    if (token) {
-      setAuthenticated(true);
-    } else {
-      setAuthenticated(false);
-    }
+    setAuthenticated(!!token); // Set to true if token exists, false otherwise
   }, []);
 
   return (
@@ -30,7 +27,7 @@ function App() {
         {!isAuthenticated ? (
           // Render these routes when the user is not authenticated
           <>
-            <Route exact path="/login" element={<Login />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
           </>
         ) : (
